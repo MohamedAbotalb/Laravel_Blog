@@ -1,0 +1,42 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\GithubController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+/*
+Route::get('posts/', [PostController::class, 'index']);
+Route::get('posts/create', [PostController::class, 'create']);
+Route::post('/posts', [PostController::class, 'store']);
+Route::get('/posts/{id}', [PostController::class, 'show'])->where('id', '[0-9]+');
+Route::get('posts/{id}/edit', [PostController::class, 'edit'])->where('id', '[0-9]+');
+Route::put('posts/{id}', [PostController::class, 'update'])->where('id', '[0-9]+');
+Route::delete('posts/{id}', [PostController::class, 'destroy'])->where('id', '[0-9]+');
+*/
+
+Route::resource('posts', PostController::class)->middleware('auth');
+
+Route::resource('comments', CommentsController::class)->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/auth/github', [GithubController::class, 'redirect'])->name('auth.github');
+Route::get('/auth/github/callback', [GithubController::class, 'callback']);
